@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WorkerThreads.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4E6A0866-4401-4326-B659-86AE6E28DC5C}</ProjectGuid>
     <RootNamespace>WorkerThreads</RootNamespace>
