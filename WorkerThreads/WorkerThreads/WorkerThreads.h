@@ -2,19 +2,17 @@
 
 #include <vector>
 #include <thread>
+#include <functional>
+#include <future>
 
 class WorkerThread
 {
 public:
 	WorkerThread(): WorkerThread(std::thread::hardware_concurrency()) {};
-	WorkerThread(unsigned int numberOfThreads) : m_threadPool()
-	{
-		for (unsigned int i; i < numberOfThreads; ++i)
-		{
-			m_threadPool.emplace_back(std::thread(&WorkerThread::threadWrokerLoop, this));
-		}
-	}
-	~WorkerThread() {};
+	WorkerThread(unsigned int numberOfThreads);
+	template <class jobType>
+	std::future<jobType> enqueue(std::function<jobType>);
+
 private:
 	void threadWrokerLoop()
 	{
