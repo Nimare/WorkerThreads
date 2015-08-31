@@ -8,8 +8,8 @@ WorkerThread::WorkerThread(unsigned int numberOfThreads) : m_threadPool()
 	}
 }
 
-template<class jobType>
-inline std::future<jobType> WorkerThread::enqueue(std::function<jobType> job)
+template<typename ReturnType,typename... ParamType>
+inline std::future<ReturnType> WorkerThread::enqueue(std::function<ReturnType(ParamType)> job)
 {
 	std::unique_lock<m_workMutex> lock;
 	m_orkQueue.push_back(job);

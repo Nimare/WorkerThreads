@@ -11,8 +11,8 @@ class WorkerThread
 public:
 	WorkerThread(): WorkerThread(std::thread::hardware_concurrency()) {};
 	WorkerThread(unsigned int numberOfThreads);
-	template <class jobType>
-	std::future<jobType> enqueue(std::function<jobType>);
+	template <typename ReturnType, typename... ParamType>
+	std::future<ReturnType> enqueue(std::function<ReturnType(ParamType)>);
 
 private:
 	void threadWrokerLoop()
