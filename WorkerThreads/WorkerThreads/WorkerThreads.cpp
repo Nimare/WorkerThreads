@@ -11,7 +11,20 @@ WorkerThread::WorkerThread(unsigned int numberOfThreads) : m_threadPool()
 template<typename ReturnType,typename... ParamType>
 inline std::future<ReturnType> WorkerThread::enqueue(std::function<ReturnType(ParamType)> job)
 {
-	std::unique_lock<m_workMutex> lock;
-	m_orkQueue.push_back(job);
-	return std::future<jobType>();
+	{
+		std::lock_guard<std::mutex> lock(m_workMutex);
+		m_workQueue.push_back(job);
+	}
+	return std::future<ReturnType>();
+}
+
+void WorkerThread::threadWrokerLoop()
+{
+	while(true)
+	{
+		{
+			std::lock_guard<std::mutex> lock(m_workMutex);
+			m_workQueue.pop_front();
+		}
+	}
 }

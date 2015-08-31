@@ -15,9 +15,7 @@ public:
 	std::future<ReturnType> enqueue(std::function<ReturnType(ParamType)>);
 
 private:
-	void threadWrokerLoop()
-	{
-	}
+	void threadWrokerLoop();
 	std::vector<std::thread> m_threadPool;
 	std::deque<std::function<void()>> m_workQueue;
 	std::mutex m_workMutex;
