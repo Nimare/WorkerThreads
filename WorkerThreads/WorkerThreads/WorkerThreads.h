@@ -11,8 +11,17 @@ class WorkerThread
 public:
 	WorkerThread(): WorkerThread(std::thread::hardware_concurrency()) {};
 	WorkerThread(unsigned int numberOfThreads);
-	template <typename ReturnType, typename... ParamType>
-	std::future<ReturnType> enqueue(std::function<ReturnType(ParamType)>);
+	template<typename ReturnType, typename Function, typename... ParamType>
+	inline std::future<ReturnType> WorkerThread::enqueue(Function&& fn, ParamType&&... param)
+	{
+#if 0
+		{
+			std::lock_guard<std::mutex> lock(m_workMutex);
+			m_workQueue.push_back(fn);
+		}
+#endif
+		return std::future<ReturnType>();
+	}
 
 private:
 	void threadWrokerLoop();
