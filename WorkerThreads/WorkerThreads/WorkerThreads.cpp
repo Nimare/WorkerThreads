@@ -1,6 +1,6 @@
 #include "WorkerThreads.h"
 
-WorkerThread::WorkerThread(unsigned int numberOfThreads) : m_threadPool()
+WorkerThread::WorkerThread(unsigned int numberOfThreads) : m_threadPool(), m_shutdown(false)
 {
 	for (unsigned int i = 0; i < numberOfThreads; ++i)
 	{
@@ -8,6 +8,25 @@ WorkerThread::WorkerThread(unsigned int numberOfThreads) : m_threadPool()
 	}
 }
 
+WorkerThread::~WorkerThread()
+{
+	shutdown();
+}
+
+void WorkerThread::shutdown()
+{
+	m_shutdown = true;
+	joinAll();
+}
+
+void WorkerThread::joinAll()
+{
+	for (auto& thr : m_threadPool)
+	{
+		if (thr.joinable())
+			thr.join();
+	}
+}
 
 void WorkerThread::threadWrokerLoop()
 {
@@ -24,5 +43,7 @@ void WorkerThread::threadWrokerLoop()
 			if (func)
 				func();
 		}
+		if (m_shutdown)
+			break;
 	}
 }

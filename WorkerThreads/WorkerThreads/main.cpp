@@ -8,8 +8,9 @@ double square(double num)
 
 int main()
 {
-	WorkerThread wrokQueue;
+	WorkerThread workQueue;
 	//wrokQueue.enqueue<double, std::function<double(double)>, double>(&square, 5.0);
-	wrokQueue.enqueue<double, std::function<double(double)>, double>(&square, 5.0);
+	workQueue.enqueue<double, std::function<double(double)>, double>(&square, 5.0);
+	workQueue.shutdown();
 	return 0;
 }
