@@ -13,11 +13,16 @@ void WorkerThread::threadWrokerLoop()
 {
 	while(true)
 	{
-		std::function<void()> fn;
+		std::function<void()> func;
 		{
 			std::lock_guard<std::mutex> lock(m_workMutex);
-			fn = m_workQueue.front();
-			m_workQueue.pop_front();
+			if (!m_workQueue.empty())
+			{
+				func = std::move(m_workQueue.front());
+				m_workQueue.pop_front();
+			}
+			if (func)
+				func();
 		}
 	}
 }

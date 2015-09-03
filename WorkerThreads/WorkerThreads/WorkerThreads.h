@@ -14,12 +14,11 @@ public:
 	template<typename ReturnType, typename Function, typename... ParamType>
 	inline std::future<ReturnType> WorkerThread::enqueue(Function&& fn, ParamType&&... param)
 	{
-#if 0
 		{
 			std::lock_guard<std::mutex> lock(m_workMutex);
-			m_workQueue.push_back(fn);
+			auto func = std::bind(fn, param...);
+			m_workQueue.push_back(std::move(func));
 		}
-#endif
 		return std::future<ReturnType>();
 	}
 
